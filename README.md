@@ -1,7 +1,7 @@
 # 📚 Gestor de Tareas Académicas - Taller 2 (Django)
 
 ## 📌 Descripción
-Este proyecto fue desarrollado como parte del **Taller Individual N°2** del curso **Sistemas Inteligentes Computacionales**. El objetivo fue construir un **Gestor de Tareas Académicas** utilizando **Django** como framework principal, asistido por herramientas de **IA generativa** basadas en **LLM (Large Language Models)** para apoyar el desarrollo de software.
+Ésta aplicación fue desarrollado como parte del **Taller Individual N°2** del curso **Sistemas Inteligentes Computacionales**. El objetivo fue construir un **Gestor de Tareas Académicas** utilizando **Django** como framework principal, asistido por herramientas de **IA generativa** basadas en **LLM (Large Language Models)** para apoyar el desarrollo de software.
 
 ## 🚀 Características
 - 🔹 **Gestión completa de tareas**: Crear, editar, borrar, marcar como completadas.
