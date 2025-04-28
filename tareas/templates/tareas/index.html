@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestor de Tareas Académicas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --primary-color: #4e73df;
+            --secondary-color: #f8f9fc;
+            --accent-color: #2e59d9;
+        }
+        
+        /* Header Styles */
+        .main-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+            box-shadow: 0 4px 20px 0 rgba(0,0,0,.1);
+        }
+        
+        .navbar-brand {
+            font-weight: 800;
+            font-size: 1.5rem;
+        }
+        
+        .nav-link {
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            background-color: rgba(255,255,255,0.2);
+        }
+        
+        /* Form Styles */
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.25rem rgba(78, 115, 223, 0.25);
+        }
+        
+        .task-card {
+            transition: all 0.3s ease;
+            border-radius: 0.5rem;
+        }
+        
+        .task-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .priority-high {
+            border-left: 4px solid #dc3545;
+        }
+        
+        .priority-medium {
+            border-left: 4px solid #ffc107;
+        }
+        
+        .priority-low {
+            border-left: 4px solid #28a745;
+        }
+        
+        /* Footer Styles */
+        .main-footer {
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            padding: 3rem 0;
+        }
+        
+        .footer-links h5 {
+            color: #fff;
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+        
+        .footer-links h5::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 50px;
+            height: 2px;
+            background: var(--primary-color);
+        }
+        
+        .footer-links a {
+            color: #bdc3c7;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: #fff;
+            padding-left: 5px;
+        }
+        
+        .social-icons a {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255,255,255,0.1);
+            color: #fff !important;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 40px;
+            margin-right: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .social-icons a:hover {
+            background-color: var(--primary-color);
+            transform: translateY(-3px);
+        }
+        
+        .copyright {
+            background-color: #1a252f;
+            color: #7f8c8d;
+            padding: 1rem 0;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body class="d-flex flex-column min-vh-100">
+    <!-- Header -->
+    <header class="main-header">
+        <nav class="navbar navbar-expand-lg navbar-dark container">
+            <div class="container-fluid">
+                <a class="navbar-brand d-flex align-items-center" href="#">
+                    <i class="bi bi-check2-circle me-2"></i>
+                    <span>TaskMaster</span>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#"><i class="bi bi-house-door me-1"></i> Inicio</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><i class="bi bi-calendar-check me-1"></i> Calendario</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><i class="bi bi-graph-up me-1"></i> Estadísticas</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><i class="bi bi-gear me-1"></i> Configuración</a>
+                        </li>
+                        <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
+                            <a class="btn btn-outline-light rounded-pill px-3" href="#">
+                                <i class="bi bi-person-circle me-1"></i> Mi Cuenta
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Contenido Principal -->
+    <main class="flex-grow-1">
+        <div class="container py-5">
+            <div class="text-center mb-5">
+                <h1 class="display-4 fw-bold text-dark mb-3">
+                    <i class="bi bi-check2-circle text-primary me-2"></i>Gestor de Tareas Académicas
+                </h1>
+                <p class="lead text-muted">Organiza, prioriza y completa tus tareas de manera eficiente</p>
+            </div>
+
+            <div class="row g-4">
+                <!-- Formulario Mejorado -->
+                <div class="col-lg-6">
+                    <div class="card shadow-lg border-0">
+                        <div class="card-header bg-primary text-white py-3">
+                            <h4 class="mb-0"><i class="bi bi-pencil-square me-2"></i>Nueva Tarea</h4>
+                        </div>
+                        <div class="card-body p-4">
+                            <form method="post" class="needs-validation" novalidate>
+                                {% csrf_token %}
+                                
+                                <!-- Nombre de la Tarea -->
+                                <div class="mb-4">
+                                    <label for="id_nombre" class="form-label fw-bold">Nombre de la tarea</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-card-heading"></i></span>
+                                        <input type="text" class="form-control form-control-lg" id="id_nombre" name="nombre" 
+                                               value="{{ form.nombre.value|default:'' }}" required placeholder="Ej: Ensayo sobre literatura">
+                                        <div class="invalid-feedback">
+                                            Por favor ingresa un nombre para la tarea.
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="row g-3 mb-4">
+                                    <!-- Asignatura -->
+                                    <div class="col-md-6">
+                                        <label for="id_asignatura" class="form-label fw-bold">Asignatura</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bi bi-book"></i></span>
+                                            <input 
+                                                type="text" 
+                                                class="form-control" 
+                                                id="id_asignatura" 
+                                                name="asignatura" 
+                                                value="{{ form.asignatura.value|default_if_none:'' }}" 
+                                                placeholder="Ingresa una asignatura" 
+                                                required>
+                                            <div class="invalid-feedback">
+                                                Por favor ingresa una asignatura.
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    
+                                    <!-- Fecha Límite -->
+                                    <div class="col-md-6">
+                                        <label for="id_fecha_limite" class="form-label fw-bold">Fecha límite</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bi bi-calendar-date"></i></span>
+                                            <input type="date" class="form-control" id="id_fecha_limite" name="fecha_limite" 
+                                                   value="{{ form.fecha_limite.value|default:'' }}" required>
+                                            <div class="invalid-feedback">
+                                                Por favor ingresa una fecha límite.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Prioridad -->
+                                <div class="mb-4">
+                                    <label class="form-label fw-bold">Prioridad</label>
+                                    <div class="btn-group w-100" role="group">
+                                        <input type="radio" class="btn-check" name="prioridad" id="prioridad-alta" 
+                                               value="Alta" {% if form.prioridad.value == "Alta" %}checked{% endif %} required>
+                                        <label class="btn btn-outline-danger" for="prioridad-alta">
+                                            <i class="bi bi-exclamation-triangle-fill me-1"></i> Alta
+                                        </label>
+                                        
+                                        <input type="radio" class="btn-check" name="prioridad" id="prioridad-media" 
+                                               value="Media" {% if form.prioridad.value == "Media" or not form.prioridad.value %}checked{% endif %}>
+                                        <label class="btn btn-outline-warning" for="prioridad-media">
+                                            <i class="bi bi-exclamation-circle-fill me-1"></i> Media
+                                        </label>
+                                        
+                                        <input type="radio" class="btn-check" name="prioridad" id="prioridad-baja" 
+                                               value="Baja" {% if form.prioridad.value == "Baja" %}checked{% endif %}>
+                                        <label class="btn btn-outline-success" for="prioridad-baja">
+                                            <i class="bi bi-arrow-down-circle-fill me-1"></i> Baja
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <!-- Descripción -->
+                                <div class="mb-4">
+                                    <label for="id_descripcion" class="form-label fw-bold">Descripción</label>
+                                    <textarea class="form-control" id="id_descripcion" name="descripcion" rows="3" 
+                                              placeholder="Detalles importantes sobre la tarea...">{{ form.descripcion.value|default:'' }}</textarea>
+                                </div>
+                                
+                                <!-- Botones -->
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                                    <button type="reset" class="btn btn-outline-secondary me-md-2">
+                                        <i class="bi bi-eraser-fill me-1"></i> Limpiar
+                                    </button>
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="bi bi-save-fill me-1"></i> Guardar Tarea
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <!-- Estadísticas -->
+                    <div class="card shadow-sm mt-4 border-0">
+                        <div class="card-body text-center">
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="p-3 bg-info bg-opacity-10 rounded-3">
+                                        <h3 class="text-info mb-0">{{ tareas_pendientes.count }}</h3>
+                                        <small class="text-muted">Pendientes</small>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="p-3 bg-success bg-opacity-10 rounded-3">
+                                        <h3 class="text-success mb-0">{{ tareas_completadas.count }}</h3>
+                                        <small class="text-muted">Completadas</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Lista de Tareas -->
+                <div class="col-lg-6">
+                    <!-- Tareas Pendientes -->
+                    <div class="card shadow-lg mb-4 border-0">
+                        <div class="card-header bg-warning text-white py-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h4 class="mb-0"><i class="bi bi-exclamation-triangle me-2"></i>Tareas Pendientes</h4>
+                                <span class="badge bg-white text-dark">{{ tareas_pendientes.count }}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="card-body p-0">
+                            {% if tareas_pendientes %}
+                                <div class="list-group list-group-flush">
+                                    {% for tarea in tareas_pendientes %}
+                                        <div class="list-group-item task-card priority-{{ tarea.prioridad|lower }}">
+                                            <div class="d-flex justify-content-between align-items-start">
+                                                <div class="me-3 flex-grow-1" style="cursor: pointer;" onclick="window.location='{% url 'detalle_tarea' tarea.id %}'">
+                                                    <h5 class="mb-1">{{ tarea.nombre }}</h5>
+                                                    <small class="text-muted">
+                                                        <i class="bi bi-book me-1"></i>{{ tarea.asignatura }} • 
+                                                        <i class="bi bi-calendar me-1"></i>{{ tarea.fecha_limite|date:"d/m/Y" }}
+                                                        {% if tarea.esta_atrasada %}
+                                                            <span class="badge bg-danger ms-2">Atrasada</span>
+                                                        {% endif %}
+                                                    </small>
+                                                    {% if tarea.descripcion %}
+                                                        <p class="mt-2 mb-0 text-muted">{{ tarea.descripcion|truncatechars:60 }}</p>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                            <!-- Botones debajo de cada tarea -->
+                                            <div class="btn-group d-flex mt-3">
+                                                <a href="{% url 'detalle_tarea' tarea.id %}" class="btn btn-sm btn-outline-secondary">
+                                                    <i class="bi bi-eye me-2"></i>Ver Detalle
+                                                </a>
+                                                <a href="{% url 'completar_tarea' tarea.id %}" class="btn btn-sm btn-success">
+                                                    <i class="bi bi-check-circle me-2"></i>Completar
+                                                </a>
+                                                <a href="{% url 'editar_tarea' tarea.id %}" class="btn btn-sm btn-primary">
+                                                    <i class="bi bi-pencil me-2"></i>Editar
+                                                </a>
+                                                <a href="{% url 'borrar_tarea' tarea.id %}" class="btn btn-sm btn-outline-danger" onclick="return confirm('¿Estás seguro de borrar esta tarea?');">
+                                                    <i class="bi bi-trash me-2"></i>Borrar
+                                                </a>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <div class="text-center py-5">
+                                    <i class="bi bi-check2-all display-4 text-muted mb-3"></i>
+                                    <h5 class="text-muted">No hay tareas pendientes</h5>
+                                    <p class="text-muted">¡Agrega una nueva tarea para comenzar!</p>
+                                </div>
+                            {% endif %}
+                        </div>                        
+                    </div>
+                    
+                    <!-- Tareas Completadas -->
+                    <div class="card shadow-lg border-0">
+                        <div class="card-header bg-success text-white py-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h4 class="mb-0"><i class="bi bi-check-circle me-2"></i>Tareas Completadas</h4>
+                                <span class="badge bg-white text-dark">{{ tareas_completadas.count }}</span>
+                            </div>
+                        </div>
+                        <div class="card-body p-0" style="display: block !important;">
+                            {% if tareas_completadas %}
+                                <div class="list-group list-group-flush">
+                                    {% for tarea in tareas_completadas %}
+                                        <div class="list-group-item bg-light">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div>
+                                                    <h6 class="mb-0 text-muted"><s>{{ tarea.nombre }}</s></h6>
+                                                    <small class="text-muted">
+                                                        <i class="bi bi-book me-1"></i>{{ tarea.asignatura }} • 
+                                                        <i class="bi bi-calendar me-1"></i>{{ tarea.fecha_limite|date:"d/m/Y" }}
+                                                    </small>
+                                                </div>
+                                                <div class="btn-group">
+                                                    <a href="{% url 'revertir_tarea' tarea.id %}" class="btn btn-sm btn-info me-1" title="Marcar como pendiente">
+                                                        <i class="bi bi-arrow-counterclockwise"></i>
+                                                    </a>
+                                                    <a href="{% url 'borrar_tarea' tarea.id %}" class="btn btn-sm btn-outline-danger" 
+                                                    onclick="return confirm('¿Estás seguro de borrar esta tarea?');" title="Eliminar">
+                                                        <i class="bi bi-trash"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <div class="text-center py-5">
+                                    <i class="bi bi-hourglass display-4 text-muted mb-3"></i>
+                                    <h5 class="text-muted">No hay tareas completadas</h5>
+                                    <p class="text-muted">Completa algunas tareas para verlas aquí</p>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="main-footer mt-auto">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4 mb-lg-0">
+                    <div class="footer-links">
+                        <h5>TaskMaster</h5>
+                        <p>La mejor herramienta para organizar tus tareas académicas y mejorar tu productividad.</p>
+                        <div class="social-icons mt-3">
+                            <a href="#"><i class="bi bi-facebook"></i></a>
+                            <a href="#"><i class="bi bi-twitter"></i></a>
+                            <a href="#"><i class="bi bi-instagram"></i></a>
+                            <a href="#"><i class="bi bi-linkedin"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4 mb-md-0">
+                    <div class="footer-links">
+                        <h5>Enlaces</h5>
+                        <a href="#">Inicio</a>
+                        <a href="#">Características</a>
+                        <a href="#">Precios</a>
+                        <a href="#">FAQ</a>
+                        <a href="#">Blog</a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4 mb-md-0">
+                    <div class="footer-links">
+                        <h5>Legal</h5>
+                        <a href="#">Términos</a>
+                        <a href="#">Privacidad</a>
+                        <a href="#">Cookies</a>
+                        <a href="#">Licencias</a>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4">
+                    <div class="footer-links">
+                        <h5>Contacto</h5>
+                        <p><i class="bi bi-geo-alt me-2"></i> Universidad Nacional de Colombia Sede Manizales, Manizales,Caldas</p>
+                        <p><i class="bi bi-envelope me-2"></i> jfajardob@unal.edu.co</p>
+                        <p><i class="bi bi-phone me-2"></i> +57 304 6552937</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="copyright text-center">
+            <div class="container">
+                <p class="mb-0">&copy; {% now "Y" %} TaskMaster. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Validación de formulario
+        (function () {
+            'use strict'
+            
+            // Seleccionar todos los formularios que necesitan validación
+            var forms = document.querySelectorAll('.needs-validation')
+            
+            // Validar cada campo al enviar
+            Array.prototype.slice.call(forms)
+                .forEach(function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (!form.checkValidity()) {
+                            event.preventDefault()
+                            event.stopPropagation()
+                        }
+                        
+                        form.classList.add('was-validated')
+                    }, false)
+                })
+        })()
+        
+        // Resaltar fechas próximas a vencer
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date();
+            const nextWeek = new Date();
+            nextWeek.setDate(today.getDate() + 7);
+            
+            document.querySelectorAll('.task-card').forEach(card => {
+                const dateText = card.querySelector('small.text-muted');
+                if (dateText) {
+                    const dateParts = dateText.textContent.match(/(\d{2})\/(\d{2})\/(\d{4})/);
+                    if (dateParts) {
+                        const taskDate = new Date(`${dateParts[3]}-${dateParts[2]}-${dateParts[1]}`);
+                        if (taskDate < today) {
+                            card.classList.add('border-danger');
+                            card.querySelector('h5').classList.add('text-danger');
+                        } else if (taskDate <= nextWeek) {
+                            card.classList.add('border-warning');
+                            card.querySelector('h5').classList.add('text-warning');
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
