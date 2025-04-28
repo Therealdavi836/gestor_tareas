@@ -30,7 +30,6 @@
  ┃ ┗ 📜 views.py (Lógica de vistas)
  ┣ 📂 gestor_tareas (Configuración general del proyecto)
  ┣ 📜 manage.py
- ┗ 📜 requirements.txt (Dependencias del proyecto)
 ```
 
 ## ⚡ Instalación
@@ -45,23 +44,19 @@
    source venv/bin/activate # Linux/Mac
    venv\Scripts\activate    # Windows
    ```
-3. Instala las dependencias:
-   ```bash
-   pip install -r requirements.txt
-   ```
-4. Realiza las migraciones:
+3. Realiza las migraciones:
    ```bash
    python manage.py migrate
    ```
-5. (Opcional) Crea un superusuario:
+4. (Opcional) Crea un superusuario:
    ```bash
    python manage.py createsuperuser
    ```
-6. Ejecuta el servidor:
+5. Ejecuta el servidor:
    ```bash
    python manage.py runserver
    ```
-7. Accede a la aplicación:
+6. Accede a la aplicación:
    ```
    http://127.0.0.1:8000
    ```
